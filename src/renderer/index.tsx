@@ -22,8 +22,14 @@ Utils.ClearExpiredStorage();
 
 export const store = configureStore();
 
+ConfigProvider.config({
+  theme: {
+    primaryColor: '#EDA413',
+  },
+});
+
 render(
-  <ConfigProvider locale={zhCN}>
+  <ConfigProvider componentSize="small" space={{ size: 'small' }}>
     <Provider store={store}>
       <App />
     </Provider>
