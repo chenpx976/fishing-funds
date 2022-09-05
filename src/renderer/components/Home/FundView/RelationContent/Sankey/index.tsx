@@ -1,4 +1,5 @@
 import React from 'react';
+import NP from 'number-precision';
 
 import CustomDrawer from '@/components/CustomDrawer';
 import { useResizeEchart, useRenderEcharts, useDrawer } from '@/utils/hooks';
@@ -8,7 +9,7 @@ const DetailFundContent = React.lazy(() => import('@/components/Home/FundView/De
 const AddStockContent = React.lazy(() => import('@/components/Home/StockView/AddStockContent'));
 
 interface SankeyProps {
-  data: (Fund.ResponseItem & Fund.FixData & { stocks: { GPJC: string; JZBL: string; INDEXNAME: string }[] })[];
+  data: (Fund.ResponseItem & Fund.FixData & { stocks: { GPJC: string; JZBL: string; INDEXNAME: string }[]; cbje: number })[];
   valueKey: 'GPJC' | 'INDEXNAME';
   length: number;
 }
@@ -51,7 +52,7 @@ const Sankey: React.FC<SankeyProps> = ({ data, valueKey, length }) => {
               item.stocks.map((stock) => ({
                 source: item.name,
                 target: stock[valueKey],
-                value: Number(stock.JZBL),
+                value: NP.times(item.cbje, NP.divide(stock.JZBL, 100)),
               }))
             )
             .flat(),

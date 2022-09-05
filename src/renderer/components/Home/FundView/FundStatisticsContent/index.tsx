@@ -24,6 +24,7 @@ import * as CONST from '@/constants';
 
 import { useAllCyFunds, useAppSelector } from '@/utils/hooks/utils';
 import styles from './index.module.scss';
+import { CalcFund } from '@/helpers/fund';
 
 export interface FundStatisticsContentProps {
   onEnter: () => void;
@@ -32,6 +33,7 @@ export interface FundStatisticsContentProps {
 
 const FundStatisticsContent: React.FC<FundStatisticsContentProps> = (props) => {
   const { walletConfig } = useAppSelector((state) => state.wallet.config);
+  const fundConfigCodeMap = useAppSelector((state) => state.wallet.fundConfigCodeMap);
 
   const [statusMap, setStatusMap] = useState(
     walletConfig.reduce((r, c) => {
@@ -64,7 +66,11 @@ const FundStatisticsContent: React.FC<FundStatisticsContentProps> = (props) => {
     }
   );
 
-  const sankeyData = sankeyResult.filter(Utils.NotEmpty);
+  const sankeyData = sankeyResult.filter(Utils.NotEmpty).map((item) => ({
+    ...CalcFund(item, fundConfigCodeMap),
+    ...item,
+  }));
+  console.log('🚀 ~ file: index.tsx ~ line 68 ~ sankeyData', sankeyData);
   const tags = Array.from(new Set(sankeyData.map(({ stocks = [] }) => stocks.map((stock) => stock.INDEXNAME)).flat()));
 
   function changeWalletStatus(code: string, status: boolean) {
