@@ -9,7 +9,7 @@ const DetailFundContent = React.lazy(() => import('@/components/Home/FundView/De
 const AddStockContent = React.lazy(() => import('@/components/Home/StockView/AddStockContent'));
 
 interface SankeyProps {
-  data: (Fund.ResponseItem & Fund.FixData & { stocks: { GPJC: string; JZBL: string; INDEXNAME: string }[]; cbje: number })[];
+  data: (Fund.ResponseItem & Fund.FixData & { stocks: { GPJC: string; JZBL: string; INDEXNAME: string }[]; cbje: number | undefined })[];
   valueKey: 'GPJC' | 'INDEXNAME';
   length: number;
 }
@@ -52,7 +52,7 @@ const Sankey: React.FC<SankeyProps> = ({ data, valueKey, length }) => {
               item.stocks.map((stock) => ({
                 source: item.name,
                 target: stock[valueKey],
-                value: NP.times(item.cbje, NP.divide(stock.JZBL, 100)),
+                value: item.cbje ? NP.times(item.cbje, NP.divide(stock.JZBL, 100)) : stock.JZBL,
               }))
             )
             .flat(),

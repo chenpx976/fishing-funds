@@ -70,7 +70,7 @@ const FundStatisticsContent: React.FC<FundStatisticsContentProps> = (props) => {
     ...CalcFund(item, fundConfigCodeMap),
     ...item,
   }));
-  console.log('🚀 ~ file: index.tsx ~ line 68 ~ sankeyData', sankeyData);
+
   const tags = Array.from(new Set(sankeyData.map(({ stocks = [] }) => stocks.map((stock) => stock.INDEXNAME)).flat()));
 
   function changeWalletStatus(code: string, status: boolean) {
